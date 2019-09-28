@@ -17,10 +17,9 @@ import com.google.zxing.integration.android.IntentIntegrator.forSupportFragment
 import kotlinx.android.synthetic.main.alert_scan_or_manual.*
 import kotlinx.android.synthetic.main.alert_scan_or_manual.view.*
 import kotlinx.android.synthetic.main.prepare_to_scan_lay.*
-import java.lang.Exception
 
 
-class ScanQrFragment : Fragment() {
+class PrepareToScanFragment : Fragment() {
     companion object {
         const val SCAN_QR_CONTENT_CODE = "SCAN_QR_CONTENT_CODE"
     }
@@ -38,7 +37,7 @@ class ScanQrFragment : Fragment() {
             toScanner()
         }
         manual_scan_barcode.setOnClickListener {
-            view.barcode_form.visibility = View.VISIBLE
+            it.barcode_form.visibility = View.VISIBLE
         }
     }
 
@@ -50,20 +49,18 @@ class ScanQrFragment : Fragment() {
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)  {
-        try {
-            val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-            if (result != null) {
-                findNavController().navigate(
-                        R.id.action_navigation_barcode_to_checkDetailsFragment,
-                        Bundle().apply {
-                            putString(SCAN_QR_CONTENT_CODE, result.contents)
-                        }
-                )
-            } else {
-                super.onActivityResult(requestCode, resultCode, data)
-            }
-        } catch (e: Exception) { }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (result != null) {
+            findNavController().navigate(
+                    R.id.action_navigation_barcode_to_checkDetailsFragment,
+                    Bundle().apply {
+                        putString(SCAN_QR_CONTENT_CODE, result.contents)
+                    }
+            )
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     fun showNewAppDialog(context: Context) {

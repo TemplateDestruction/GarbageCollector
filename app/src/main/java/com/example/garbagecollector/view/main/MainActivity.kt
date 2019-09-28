@@ -17,9 +17,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        dialog = LoadingDialog.view(supportFragmentManager)
-        button.setOnClickListener {
+        setContentView(R.layout.container_view)
+//        dialog = LoadingDialog.view(supportFragmentManager)
+//        button.setOnClickListener {
 //            RepositoryProvider
 //                    .getJsonRepository()
 //                    .separateCollectionPoints
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 //                    .subscribe {
 //                       onSuccessId(it)
 //                    }
-        }
+//        }
     }
 
     private fun onSuccessId(sharePoint: SharePoint?) {

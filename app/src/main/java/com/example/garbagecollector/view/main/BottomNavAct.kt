@@ -26,4 +26,8 @@ class BottomNavAct : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
+    override fun onBackPressed() {
+        findNavController(R.id.nav_host_fragment).popBackStack()
+    }
 }

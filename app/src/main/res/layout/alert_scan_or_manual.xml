@@ -31,7 +31,7 @@
         android:backgroundTint="#fff"
         android:hint="Введите штрих-код"
         android:textAlignment="center"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:visibility="invisible"
         app:clearIconDrawWhenFocused="false"
         app:clearIconDrawable="@drawable/ic_btn_delete"

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -61,12 +62,12 @@ public class MapViewFragment extends Fragment {
     ArrayList<Marker> glassMarkers = new ArrayList<>();
     ArrayList<Marker> plasticMarkers = new ArrayList<>();
     ArrayList<Marker> metalMarkers = new ArrayList<>();
-
+    RelativeLayout mainLay;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dialog = LoadingDialog.view(getFragmentManager());
 
-        View rootView = inflater.inflate(R.layout.map_lay, container, false);
+        View rootView = inflater.inflate(R.layout.container_view, container, false);
 //        ensurePermissions(getActivity());
         mMapView = (MapView) rootView.findViewById(R.id.mapViewNew);
         mMapView.onCreate(savedInstanceState);
@@ -150,12 +151,15 @@ public class MapViewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        glassFilter = view.findViewById(R.id.glass_filter_btn);
-        glassTrashBtn = view.findViewById(R.id.glass_trash_btn);
-        paperFilter = view.findViewById(R.id.paper_filter_btn);
-        paperTrashBtn = view.findViewById(R.id.paper_trash_btn);
-        plasticFilter = view.findViewById(R.id.plastic_filter_btn);
-        plasticTrashBtn = view.findViewById(R.id.plastic_trash_btn);
+        mainLay = view.findViewById(R.id.main_lay_reference);
+        glassFilter = mainLay.findViewById(R.id.glass_filter_btn);
+        glassTrashBtn = mainLay.findViewById(R.id.glass_trash_btn);
+        paperFilter = mainLay.findViewById(R.id.paper_filter_btn);
+        paperTrashBtn = mainLay.findViewById(R.id.paper_trash_btn);
+        plasticFilter = mainLay.findViewById(R.id.plastic_filter_btn);
+        plasticTrashBtn = mainLay.findViewById(R.id.plastic_trash_btn);
+        metalFilter = mainLay.findViewById(R.id.metal_filter_btn);
+        metalTrashBtn = mainLay.findViewById(R.id.metal_trash_btn);
 
         glassTrashBtn.setOnClickListener(view1 -> glassFilter.performClick());
         paperTrashBtn.setOnClickListener(view1 -> paperFilter.performClick());
