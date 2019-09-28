@@ -1,6 +1,10 @@
 package xyz.tusion.vtb_hackathon.presentation
 
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +14,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.garbagecollector.R
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentIntegrator.forSupportFragment
-
+import kotlinx.android.synthetic.main.alert_scan_or_manual.*
+import kotlinx.android.synthetic.main.alert_scan_or_manual.view.*
 
 
 class ScanQrFragment : Fragment() {
@@ -26,11 +31,16 @@ class ScanQrFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        forSupportFragment(this as Fragment)
-            .setDesiredBarcodeFormats(IntentIntegrator.EAN_13)
-            .setPrompt(getString(R.string.barcode_title))
-            .initiateScan()
+        showNewAppDialog(requireContext())
     }
+
+    private fun toScanner() {
+        forSupportFragment(this as Fragment)
+                .setDesiredBarcodeFormats(IntentIntegrator.EAN_13)
+                .setPrompt(getString(R.string.barcode_title))
+                .initiateScan()
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
@@ -44,5 +54,25 @@ class ScanQrFragment : Fragment() {
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    fun showNewAppDialog(context: Context) {
+        val alertadd = AlertDialog.Builder(context)
+        val factory = LayoutInflater.from(context)
+        val view = factory.inflate(R.layout.alert_scan_or_manual, null)
+        alertadd.setView(view)
+        val dialog = alertadd.create()
+        view.alert_scan_ok.setOnClickListener {
+            toScanner()
+        }
+        view.alert_manual_ok.setOnClickListener {
+//            view.alert_scan_ok.visibility = View.INVISIBLE
+            view.alert_manual_ok.visibility = View.INVISIBLE
+            view.barcode_form.visibility = View.VISIBLE
+//            view.txt_pin_entry.visibility = View.VISIBLE
+
+        }
+//        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        dialog.show()
     }
 }

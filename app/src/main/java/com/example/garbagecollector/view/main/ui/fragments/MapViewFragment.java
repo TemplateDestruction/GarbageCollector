@@ -54,13 +54,13 @@ public class MapViewFragment extends Fragment {
     ArrayList<LatLng> pointsCords = new ArrayList<>();
     MapView mMapView;
     private GoogleMap googleMap;
-    CheckBox glassFilter;
-    CheckBox paperFilter;
-    ConstraintLayout glassTrashBtn;
-    ConstraintLayout paperTrashBtn;
+    CheckBox glassFilter, paperFilter, plasticFilter, metalFilter;
+    ConstraintLayout glassTrashBtn,paperTrashBtn, plasticTrashBtn, metalTrashBtn;
     String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
     ArrayList<Marker> paperMarkers = new ArrayList<>();
     ArrayList<Marker> glassMarkers = new ArrayList<>();
+    ArrayList<Marker> plasticMarkers = new ArrayList<>();
+    ArrayList<Marker> metalMarkers = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -154,9 +154,13 @@ public class MapViewFragment extends Fragment {
         glassTrashBtn = view.findViewById(R.id.glass_trash_btn);
         paperFilter = view.findViewById(R.id.paper_filter_btn);
         paperTrashBtn = view.findViewById(R.id.paper_trash_btn);
+        plasticFilter = view.findViewById(R.id.plastic_filter_btn);
+        plasticTrashBtn = view.findViewById(R.id.plastic_trash_btn);
 
         glassTrashBtn.setOnClickListener(view1 -> glassFilter.performClick());
         paperTrashBtn.setOnClickListener(view1 -> paperFilter.performClick());
+        plasticTrashBtn.setOnClickListener(view1 -> plasticFilter.performClick());
+        metalTrashBtn.setOnClickListener(view1 -> metalFilter.performClick());
 
         glassFilter.setOnCheckedChangeListener((glassFilter, checked) -> {
             if (checked) {
@@ -168,6 +172,13 @@ public class MapViewFragment extends Fragment {
         paperFilter.setOnCheckedChangeListener((paperFilter, checked) -> {
             if (checked) {
                 paperMarkers.forEach(marker -> marker.setVisible(true));
+            } else {
+                paperMarkers.forEach(marker -> marker.setVisible(false));
+            }
+        });
+        plasticFilter.setOnCheckedChangeListener((plasticFilter, checked) -> {
+            if (checked) {
+                plasticMarkers.forEach(marker -> marker.setVisible(true));
             } else {
                 paperMarkers.forEach(marker -> marker.setVisible(false));
             }
@@ -204,18 +215,23 @@ public class MapViewFragment extends Fragment {
                 switch (trashType.getName()) {
                     case "Бумага":
                         marker = googleMap.addMarker(sharePointMarkerOptions);
-                        marker.setVisible(false);
+                        marker.setVisible(true);
                         paperMarkers.add(marker);
                         break;
                     case "Металл":
-                        //
+                        marker = googleMap.addMarker(sharePointMarkerOptions);
+                        marker.setVisible(false);
+                        metalMarkers.add(marker);
                         break;
                     case "Стекло":
                         marker = googleMap.addMarker(sharePointMarkerOptions);
+                        marker.setVisible(false);
                         glassMarkers.add(marker);
                         break;
                     case "Пластик":
-                        //
+                        marker = googleMap.addMarker(sharePointMarkerOptions);
+                        marker.setVisible(false);
+                        plasticMarkers.add(marker);
                         break;
                 }
             }
