@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "119034591470",
+    "firebase_url": "https://digitalbreakthrough-final.firebaseio.com",
+    "project_id": "digitalbreakthrough-final",
+    "storage_bucket": "digitalbreakthrough-final.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119034591470:android:3d68ba8ab6313756331bff",
+        "android_client_info": {
+          "package_name": "com.example.garbagecollector"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "119034591470-p6qk41bj6c0iq013nmgk9pi7fij3hnga.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa-P3HVffM0_CvpJvunq12Leo6ABFOpn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "119034591470-p6qk41bj6c0iq013nmgk9pi7fij3hnga.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

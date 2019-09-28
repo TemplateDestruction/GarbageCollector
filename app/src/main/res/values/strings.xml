@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GarbageCollector</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_bottom_nav">BottomNavAct</string>
+    <string name="title_barcode">Barcode</string>
+    <string name="title_map">Map</string>
+    <string name="title_profile">Profile</string>
+    <string name="barcode_title"> </string>
+</resources>
