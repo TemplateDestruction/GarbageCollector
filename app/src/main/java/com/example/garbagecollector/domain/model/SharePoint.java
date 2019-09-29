@@ -7,6 +7,10 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class SharePoint {
 
     @SerializedName("id")
@@ -20,7 +24,7 @@ public class SharePoint {
     private City city;
     @SerializedName("photo")
     @Expose
-    private Object photo;
+    private String photo;
     @SerializedName("trashTypes")
     @Expose
     private List<TrashType> trashTypes = null;
@@ -29,10 +33,25 @@ public class SharePoint {
     private String info;
     @SerializedName("latitude")
     @Expose
-    private double latitude;
+    private Double latitude;
     @SerializedName("longitude")
     @Expose
-    private double longitude;
+    private Double longitude;
+    @SerializedName("distance")
+    @Expose
+    private Object distance;
+    @SerializedName("rating")
+    @Expose
+    private Double rating;
+    @SerializedName("comments")
+    @Expose
+    private List<Comment> comments = null;
+    @SerializedName("openHours")
+    @Expose
+    private String openHours;
+    @SerializedName("full")
+    @Expose
+    private Boolean full;
 
     public Integer getId() {
         return id;
@@ -58,11 +77,11 @@ public class SharePoint {
         this.city = city;
     }
 
-    public Object getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(Object photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 
@@ -74,7 +93,6 @@ public class SharePoint {
         this.trashTypes = trashTypes;
     }
 
-    @Nullable
     public String getInfo() {
         return info;
     }
@@ -83,19 +101,60 @@ public class SharePoint {
         this.info = info;
     }
 
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Object getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Object distance) {
+        this.distance = distance;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public String getOpenHours() {
+        return openHours;
+    }
+
+    public void setOpenHours(String openHours) {
+        this.openHours = openHours;
+    }
+
+    public Boolean getFull() {
+        return full;
+    }
+
+    public void setFull(Boolean full) {
+        this.full = full;
+    }
+
 }

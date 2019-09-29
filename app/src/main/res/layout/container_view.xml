@@ -12,11 +12,11 @@
         layout="@layout/map_lays"
         android:id="@+id/main_lay_reference"/>
 
-    <!-- подключение нижнего экрана -->
-<!--    <include-->
-<!--        android:visibility="invisible"-->
-<!--        layout="@layout/bottom_sheet"-->
-<!--        android:id="@+id/bottom_sheet_reference"/>-->
+     подключение нижнего экрана
+    <include
+        android:visibility="invisible"
+        layout="@layout/bottom_sheet"
+        android:id="@+id/bottom_sheet_reference"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/myLocationButton"
         android:layout_width="wrap_content"

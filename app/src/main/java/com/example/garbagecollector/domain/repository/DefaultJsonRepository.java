@@ -38,10 +38,10 @@ public class DefaultJsonRepository implements JsonRepository {
 
     @NonNull
     @Override
-    public Observable<GoodInfo> getGoodInfo(String id) {
+    public Observable<GoodInfo> getGoodInfo(String id, String lat, String lng) {
         return StandardApiFactory
                 .getJsonService()
-                .getGoodInfo(id)
+                .getGoodInfo(id, lat, lng)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

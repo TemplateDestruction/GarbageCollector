@@ -23,5 +23,6 @@ public interface JsonRepository {
     Observable<SharePoint> getSeparateCollectionPointById(int id);
 
     @NonNull
-    Observable<GoodInfo> getGoodInfo(String id);
+    Observable<GoodInfo> getGoodInfo(String id, String lat, String lng);
+
 }
