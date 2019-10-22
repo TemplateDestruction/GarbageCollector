@@ -9,7 +9,9 @@ import com.example.garbagecollector.domain.model.good.GoodInfo;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class DefaultJsonRepository implements JsonRepository {
@@ -28,10 +30,17 @@ public class DefaultJsonRepository implements JsonRepository {
 
     @NonNull
     @Override
-    public Observable<SharePoint> getSeparateCollectionPointById(int id) {
+    public Observable<SharePoint> getSeparateCollectionPointById(String id) {
         return StandardApiFactory
                 .getJsonService()
                 .getSeparateCollectionPointById(id)
+                .flatMap(new Function<SharePoint, ObservableSource<SharePoint>>() {
+                    @Override
+                    public ObservableSource<SharePoint> apply(SharePoint sharePoint) throws Exception {
+
+                        return Observable.just(sharePoint);
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -1,8 +1,12 @@
 package com.example.garbagecollector.view.main.ui.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,12 +48,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapViewFragmentS extends Fragment
-        implements GoogleMap.OnMarkerClickListener
 {
     boolean firstClick = true;
     LoadingView dialog;
     List<SharePoint> sharePoints;
     MapView mMapView;
+    boolean fromQRCode = false;
     private GoogleMap googleMap;
     FloatingActionButton myLocationBtn;
     CheckBox glassFilter, paperFilter, plasticFilter, metalFilter;
@@ -65,7 +69,8 @@ public class MapViewFragmentS extends Fragment
     private LinearLayout bottomSheet;
     private TextView pointName, pointStreet, pointTrashTypes,
             pointOperationMode, trashPointState, directionToTrashPoint;
-
+    private MarkerOptions QRmarkerOption;
+    private TextView routeNavigator;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dialog = LoadingDialog.view(getFragmentManager());
@@ -86,6 +91,7 @@ public class MapViewFragmentS extends Fragment
     }
 
 
+    @SuppressLint("ResourceType")
     private void initMap() {
         Log.e("Called map async", "initMap: ");
         mMapView.getMapAsync(mMap -> {
@@ -100,13 +106,29 @@ public class MapViewFragmentS extends Fragment
             // Change the visibility of my location button
 //            locationButton.setVisibility(View.GONE);
             googleMap.getUiSettings().setCompassEnabled(false);
-            getTrashCollectionPoints();
+            if (!fromQRCode) {
+                getTrashCollectionPoints();}
+            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    MapViewFragmentS.this.onMarkerClick(marker);
+                   return true;
+                }
+            });
 //            ensurePermissions(requireActivity());
         });
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        try {
+            if (getArguments().getString("marker") != null) {
+                getTrashPoint(getArguments().getString("id"));
+                fromQRCode = true;
+            }
+        } catch (Exception e) {
+
+        }
         super.onViewCreated(view, savedInstanceState);
         bottomSheet = view.findViewById(R.id.bottom_sheet_reference);
         myLocationBtn = view.findViewById(R.id.myLocationButton);
@@ -120,12 +142,12 @@ public class MapViewFragmentS extends Fragment
         metalFilter = mainLay.findViewById(R.id.metal_filter_btn);
         metalTrashBtn = mainLay.findViewById(R.id.metal_trash_btn);
 
-        pointName = mainLay.findViewById(R.id.pointName_bottom_sheet);
-        pointStreet = mainLay.findViewById(R.id.pointStreet_bottom_sheet);
-        pointTrashTypes = mainLay.findViewById(R.id.pointTrashTypes_bottom_sheet);
-        pointOperationMode = mainLay.findViewById(R.id.pointOperationMode_bottom_sheet);
-        trashPointState = mainLay.findViewById(R.id.trashPointState_bottom_sheet);
-        directionToTrashPoint = mainLay.findViewById(R.id.directionToTrashPointBtn_bottom_sheet);
+        pointName = bottomSheet.findViewById(R.id.pointName_bottom_sheet);
+        pointStreet = bottomSheet.findViewById(R.id.pointStreet_bottom_sheet);
+        pointTrashTypes = bottomSheet.findViewById(R.id.pointTrashTypes_bottom_sheet);
+        pointOperationMode = bottomSheet.findViewById(R.id.pointOperationMode_bottom_sheet);
+        trashPointState = bottomSheet.findViewById(R.id.trashPointState_bottom_sheet);
+        directionToTrashPoint = bottomSheet.findViewById(R.id.directionToTrashPointBtn_bottom_sheet);
 
         glassTrashBtn.setOnClickListener(view1 -> glassFilter.performClick());
         paperTrashBtn.setOnClickListener(view1 -> paperFilter.performClick());
@@ -190,6 +212,62 @@ public class MapViewFragmentS extends Fragment
                 metalMarkers.forEach(marker -> marker.setVisible(true));
             } else {
                 metalMarkers.forEach(marker -> marker.setVisible(false));
+            }
+        });
+    }
+
+    private void getTrashPoint(String id) {
+        RepositoryProvider
+                .getJsonRepository()
+                .getSeparateCollectionPointById(id)
+                .subscribe(
+                        this::onPointGot,
+                        this::onError
+                );
+    }
+
+    private void onPointGot(SharePoint sharePoint) {
+        BitmapDescriptor descriptor = BitmapDescriptorFactory.fromResource(R.drawable.point_icon);
+        QRmarkerOption = new MarkerOptions()
+                .position(new LatLng(sharePoint.getLatitude(), sharePoint.getLongitude()))
+                .title(sharePoint.getInfo())
+                .icon(descriptor);
+        pointName.setText(sharePoint.getInfo());
+        pointStreet.setText(sharePoint.getAddress());
+        StringBuilder stringBuilder = new StringBuilder();
+        sharePoint.getTrashTypes().forEach((trashType) -> stringBuilder.append(trashType.getName()).append(", "));
+        pointOperationMode.setText(sharePoint.getOpenHours());
+        if (!sharePoint.getFull()) {
+            trashPointState.setText("Свободен");
+            trashPointState.setBackgroundColor(requireContext().getColor(R.color.dark_green));
+        }
+        googleMap.addMarker(QRmarkerOption);
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(55.798551, 49.106324)).zoom(8).build();
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        directionToTrashPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Создаем интент для построения маршрута
+                Intent intent = new Intent("ru.yandex.yandexnavi.action.BUILD_ROUTE_ON_MAP");
+                intent.setPackage("ru.yandex.yandexnavi");
+
+                PackageManager pm = requireActivity().getPackageManager();
+                List<ResolveInfo> infos = pm.queryIntentActivities(intent, 0);
+
+                // Проверяем, установлен ли Яндекс.Навигатор
+                if (infos == null || infos.size() == 0) {
+                    // Если нет - будем открывать страничку Навигатора в Google Play
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("market://details?id=ru.yandex.yandexnavi"));
+                } else {
+                    intent.putExtra("lat_from", 55.798551);
+                    intent.putExtra("lon_from", 49.106324);
+                    intent.putExtra("lat_to", sharePoint.getLatitude());
+                    intent.putExtra("lon_to", sharePoint.getLongitude());
+                }
+
+                // Запускаем нужную Activity
+                startActivity(intent);
             }
         });
     }
@@ -308,26 +386,27 @@ public class MapViewFragmentS extends Fragment
 //        }
 //    }
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        for (SharePoint sharePoint : sharePoints) {
-            if (sharePoint.getInfo().equals(marker.getTitle())) {
-                pointName.setText(sharePoint.getInfo());
-                pointStreet.setText(sharePoint.getAddress());
-                StringBuilder stringBuilder = new StringBuilder();
-                sharePoint.getTrashTypes().forEach((trashType) -> stringBuilder.append(trashType.getName()).append(", "));
-                pointOperationMode.setText(sharePoint.getOpenHours());
-                if (!sharePoint.getFull()) {
-                    trashPointState.setText("Свободен");
-                    trashPointState.setBackgroundColor(requireContext().getColor(R.color.dark_green));
-                }
-                // TODO: 9/29/2019 маршрут
+    public void onMarkerClick(Marker marker) {
+        Log.e("CLICK MARKER MAP", "onMarkerClick: ");
+        if (!fromQRCode) {
+            for (SharePoint sharePoint : sharePoints) {
+                if (sharePoint.getInfo().equals(marker.getTitle())) {
+                    pointName.setText(sharePoint.getInfo());
+                    pointStreet.setText(sharePoint.getAddress());
+                    StringBuilder stringBuilder = new StringBuilder();
+                    sharePoint.getTrashTypes().forEach((trashType) -> stringBuilder.append(trashType.getName()).append(", "));
+                    pointOperationMode.setText(sharePoint.getOpenHours());
+                    if (!sharePoint.getFull()) {
+                        trashPointState.setText("Свободен");
+                        trashPointState.setBackgroundColor(requireContext().getColor(R.color.dark_green));
+                    }
+                    // TODO: 9/29/2019 маршрут
 //                directionToTrashPoint
 
+                }
             }
         }
         bottomSheet.setVisibility(View.VISIBLE);
-        myLocationBtn.setVisibility(View.INVISIBLE);
-        return true;
+//        myLocationBtn.setVisibility(View.INVISIBLE);
     }
 }

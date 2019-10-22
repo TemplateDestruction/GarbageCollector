@@ -1,4 +1,4 @@
-package xyz.tusion.vtb_hackathon.presentation
+package com.example.garbagecollector.view.main.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,10 +10,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.garbagecollector.R
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentIntegrator.forSupportFragment
+import kotlinx.android.synthetic.main.prepare_to_scan_lay.*
+import kotlinx.android.synthetic.main.prepare_to_scan_lay.view.*
 
 
-
-class ScanQrFragment : Fragment() {
+class PrepareToScanFragment : Fragment() {
     companion object {
         const val SCAN_QR_CONTENT_CODE = "SCAN_QR_CONTENT_CODE"
     }
@@ -22,16 +23,28 @@ class ScanQrFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.main_act, container, false)
+
+        return inflater.inflate(R.layout.prepare_to_scan_lay, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        forSupportFragment(this as Fragment)
-//                ean13
-            .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
-            .setPrompt(getString(R.string.barcode_title))
-            .initiateScan()
+//        showNewAppDialog(requireContext())
+        prepare_to_scan_btn.setOnClickListener {
+            toScanner()
+        }
+        manual_scan_barcode.setOnClickListener {
+            it.barcode_form.visibility = View.VISIBLE
+        }
     }
+
+    private fun toScanner() {
+        forSupportFragment(this as Fragment)
+                .setDesiredBarcodeFormats(IntentIntegrator.EAN_13)
+                .setPrompt(getString(R.string.barcode_title))
+                .initiateScan()
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
@@ -46,4 +59,5 @@ class ScanQrFragment : Fragment() {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
+
 }

@@ -22,7 +22,7 @@ class BottomNavAct : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_barcode, R.id.navigation_map_frag, R.id.navigation_profile))
+                R.id.prepareToScanFragment, R.id.navigation_map_frag, R.id.navigation_profile))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }

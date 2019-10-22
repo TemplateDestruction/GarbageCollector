@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="440dp"
+    android:background="@android:color/darker_gray"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="180dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="#fff">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="4dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_line_drop_down" />
+
+        <TextView
+            android:id="@+id/pointName_bottom_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Контейнер Эколайн"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="#000"
+            android:textSize="24sp"
+            android:alpha="0.87"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+        <TextView
+            android:id="@+id/pointStreet_bottom_sheet"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="14sp"
+            android:alpha="0.87"
+            android:textColor="@color/black"
+            android:text="Хусаина Мавлютова, 14В"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pointName_bottom_sheet" />
+
+        <TextView
+            android:id="@+id/pointTrashTypes_bottom_sheet"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Бумага, металл, пластик, стекло"
+            android:textColor="#000"
+            android:fontFamily="@font/roboto_regular"
+            android:alpha="0.87"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pointStreet_bottom_sheet" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/pointName_bottom_sheet"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/pointName_bottom_sheet"
+            app:srcCompat="@drawable/ic_rate" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="100dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="vertical"-->
+        <!--            tools:layout_editor_absoluteX="16dp"-->
+        <!--            tools:layout_editor_absoluteY="144dp">-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/textView11"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:alpha="0.87"-->
+        <!--                android:fontFamily="@font/roboto_regular"-->
+        <!--                android:text="Бумага"-->
+        <!--                android:textColor="@color/black"-->
+        <!--                android:textSize="14sp" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/textView12"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:alpha="0.87"-->
+        <!--                android:fontFamily="@font/roboto_regular"-->
+        <!--                android:text="Пластик"-->
+        <!--                android:textColor="@color/black" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/textView13"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:alpha="0.87"-->
+        <!--                android:fontFamily="@font/roboto_regular"-->
+        <!--                android:text="Металл"-->
+        <!--                android:textColor="@color/black" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/textView14"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:alpha="0.87"-->
+        <!--                android:fontFamily="@font/roboto_regular"-->
+        <!--                android:text="Стекло"-->
+        <!--                android:textColor="@color/black" />-->
+        <!--        </LinearLayout>-->
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="0.87"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Бумага"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/textView12"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="0.87"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Пластик"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="0.87"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Металл"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/textView14"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alpha="0.87"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Стекло"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/suitTrashTypes_bottom_sheet"
+            app:layout_constraintTop_toBottomOf="@+id/suitTrashTypes_bottom_sheet" />
+
+        <TextView
+            android:id="@+id/suitTrashTypes_bottom_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:alpha="0.87"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Принимаемые отходы"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/pointOperationMode_bottom_sheet"
+            app:layout_constraintTop_toBottomOf="@+id/pointOperationMode_bottom_sheet" />
+
+        <TextView
+            android:id="@+id/pointOperationMode_bottom_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:alpha="0.87"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Круглосуточно"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/trashPointState_bottom_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:alpha="0.87"
+            android:background="@drawable/red_rounded_corners"
+            android:padding="4dp"
+            android:text="Переполнен"
+
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/pointOperationMode_bottom_sheet"
+            app:layout_constraintStart_toEndOf="@+id/pointOperationMode_bottom_sheet"
+            app:layout_constraintTop_toTopOf="@+id/pointOperationMode_bottom_sheet" />
+
+        <TextView
+            android:id="@+id/directionToTrashPointBtn_bottom_sheet"
+            android:layout_width="96dp"
+            android:layout_height="48dp"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:text="МАРШРУТ"
+            android:textColor="@color/dark_green"
+            app:layout_constraintBottom_toBottomOf="@+id/trashPointState_bottom_sheet"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.689"
+            app:layout_constraintStart_toEndOf="@+id/trashPointState_bottom_sheet"
+            app:layout_constraintTop_toTopOf="@+id/trashPointState_bottom_sheet" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

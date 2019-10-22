@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 public interface JsonService {
 
     @GET("point/{id}")
-    Observable<SharePoint> getSeparateCollectionPointById(@Path("id") int id);
+    Observable<SharePoint> getSeparateCollectionPointById(@Path("id") String id);
 
     @GET("point/all")
     Observable<List<SharePoint>> getSeparateCollectionPoints();

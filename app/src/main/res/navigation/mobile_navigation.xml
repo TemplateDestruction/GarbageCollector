@@ -30,4 +30,12 @@
         android:id="@+id/checkDetailsFragment"
         android:name="com.example.garbagecollector.view.main.ui.fragments.CheckDetailsFragment"
         android:label="CheckDetailsFragment" />
+    <fragment
+        android:id="@+id/prepareToScanFragment"
+        android:name="com.example.garbagecollector.view.main.ui.fragments.PrepareToScanFragment"
+        android:label="PrepareToScanFragment" >
+        <action
+            android:id="@+id/action_prepareToScanFragment_to_navigation_barcode"
+            app:destination="@id/navigation_barcode" />
+    </fragment>
 </navigation>

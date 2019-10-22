@@ -33,10 +33,14 @@ class CheckDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        Toast.makeText(requireContext(), arguments?.getString(SCAN_QR_CONTENT_CODE), Toast.LENGTH_SHORT).show()
         val barCode = arguments?.getString(SCAN_QR_CONTENT_CODE)
-        RepositoryProvider
-                .getJsonRepository()
-                .getGoodInfo(barCode, "55.798551", "49.106324")
-                .subscribe({onSuccess(it)}, {this.onError(it)})
+        if (barCode == null) {
+            findNavController().navigate(R.id.navigation_map_frag)
+        } else {
+            RepositoryProvider
+                    .getJsonRepository()
+                    .getGoodInfo(barCode, "55.798551", "49.106324")
+                    .subscribe({ onSuccess(it) }, { this.onError(it) })
+        }
     }
 
     private fun onError(t: Throwable) {
@@ -45,6 +49,28 @@ class CheckDetailsFragment : Fragment() {
     }
 
     private fun onSuccess(goodInfo: GoodInfo) {
+        Log.e("trashType:", goodInfo.trashType.name)
+        Log.e("Preparation: ", goodInfo.trashType.preparation)
+        toPoint.setOnClickListener {
+            findNavController().navigate(
+                    R.id.navigation_map_frag,
+                    Bundle().apply {
+                        putString("id", goodInfo.nearestPoint.id.toString())
+                        putString("marker", "tandem")
+                        putString("name", goodInfo.nearestPoint.info)
+                        putString("street", goodInfo.nearestPoint.address)
+                        putBoolean("state", goodInfo.nearestPoint.full)
+                        putString("mode", goodInfo.nearestPoint.openHours)
+                        putString("distance", goodInfo.nearestPoint.distance)
+                    })
+        }
+        randomArticleBtn.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(goodInfo.article.link)))
+        }
+        showOnMap_fragment_details.setOnClickListener {
+                        findNavController().navigate(R.id.navigation_map_frag)
+//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(goodInfo.article.link)))
+        }
         Log.e("onSuccess", "entered")
         Picasso.get().load(goodInfo.image).fit().into(good_img_fragment_details)
         materialType_fragment_details.text = goodInfo.trashType.name
@@ -63,18 +89,7 @@ class CheckDetailsFragment : Fragment() {
             i -= 1
         }
         trashTypes_fragment_details.text = stringBuilder.toString()
-        toNearestPointBtn.setOnClickListener {
-            Bundle().apply {
-//                putSerializable("marker", goodInfo.nearestPoint)
-            }
-            findNavController().navigate(R.id.navigation_map_frag)
-        }
-        randomArticleBtn.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(goodInfo.article.link)))
-        }
-        showOnMap_fragment_details.setOnClickListener {
 
-        }
 
     }
 }

@@ -11,8 +11,6 @@
     <include
         layout="@layout/map_lays"
         android:id="@+id/main_lay_reference"/>
-
-     подключение нижнего экрана
     <include
         android:visibility="invisible"
         layout="@layout/bottom_sheet"
