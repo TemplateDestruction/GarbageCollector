@@ -1,4 +1,4 @@
-package com.example.garbagecollector.view.standard;
+package com.example.garbagecollector.view.standard.standard;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,7 +18,7 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-public class  LoadingDialog extends DialogFragment {
+public class LoadingDialog extends DialogFragment {
 
     private static final Handler HANDLER = new Handler(Looper.getMainLooper());
 

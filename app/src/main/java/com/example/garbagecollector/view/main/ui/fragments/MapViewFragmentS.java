@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,8 +31,11 @@ import com.example.garbagecollector.R;
 import com.example.garbagecollector.domain.model.SharePoint;
 import com.example.garbagecollector.domain.model.TrashType;
 import com.example.garbagecollector.domain.repository.RepositoryProvider;
+import com.example.garbagecollector.utils.PreferenceUtils;
 import com.example.garbagecollector.view.standard.LoadingDialog;
 import com.example.garbagecollector.view.standard.LoadingView;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -42,13 +46,14 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapViewFragmentS extends Fragment
-{
+public class MapViewFragmentS extends Fragment {
     boolean firstClick = true;
     LoadingView dialog;
     List<SharePoint> sharePoints;
@@ -64,13 +69,17 @@ public class MapViewFragmentS extends Fragment
     ArrayList<Marker> plasticMarkers = new ArrayList<>();
     ArrayList<Marker> metalMarkers = new ArrayList<>();
     RelativeLayout mainLay;
+    private Location location;
+
     private ImageView locationButton;
 
+    private FusedLocationProviderClient fusedLocationClient;
     private LinearLayout bottomSheet;
     private TextView pointName, pointStreet, pointTrashTypes,
             pointOperationMode, trashPointState, directionToTrashPoint;
     private MarkerOptions QRmarkerOption;
     private TextView routeNavigator;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dialog = LoadingDialog.view(getFragmentManager());
@@ -107,20 +116,25 @@ public class MapViewFragmentS extends Fragment
 //            locationButton.setVisibility(View.GONE);
             googleMap.getUiSettings().setCompassEnabled(false);
             if (!fromQRCode) {
-                getTrashCollectionPoints();}
+                getTrashCollectionPoints();
+            }
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     MapViewFragmentS.this.onMarkerClick(marker);
-                   return true;
+                    return true;
                 }
             });
 //            ensurePermissions(requireActivity());
         });
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        myLocationBtn = view.findViewById(R.id.myLocationButton);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+        myLocationBtn.setOnClickListener(view1 -> findLocation());
         try {
             if (getArguments().getString("marker") != null) {
                 getTrashPoint(getArguments().getString("id"));
@@ -131,7 +145,6 @@ public class MapViewFragmentS extends Fragment
         }
         super.onViewCreated(view, savedInstanceState);
         bottomSheet = view.findViewById(R.id.bottom_sheet_reference);
-        myLocationBtn = view.findViewById(R.id.myLocationButton);
         mainLay = view.findViewById(R.id.main_lay_reference);
         glassFilter = mainLay.findViewById(R.id.glass_filter_btn);
         glassTrashBtn = mainLay.findViewById(R.id.glass_trash_btn);
@@ -153,13 +166,6 @@ public class MapViewFragmentS extends Fragment
         paperTrashBtn.setOnClickListener(view1 -> paperFilter.performClick());
         plasticTrashBtn.setOnClickListener(view1 -> plasticFilter.performClick());
         metalTrashBtn.setOnClickListener(view1 -> metalFilter.performClick());
-
-        myLocationBtn.setOnClickListener(view12 -> {
-                    CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(55.798551, 49.106324)).zoom(12).build();
-                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        });
-
-
 
 
         glassFilter.setOnCheckedChangeListener((glassFilter, checked) -> {
@@ -214,6 +220,7 @@ public class MapViewFragmentS extends Fragment
                 metalMarkers.forEach(marker -> marker.setVisible(false));
             }
         });
+        ensurePermissions(requireActivity());
     }
 
     private void getTrashPoint(String id) {
@@ -284,13 +291,16 @@ public class MapViewFragmentS extends Fragment
     private void onError(Throwable throwable) {
         throwable.fillInStackTrace();
     }
+
     private void onSuccess(List<SharePoint> sharePoints) {
+        int i = 0;
         this.sharePoints = sharePoints;
         BitmapDescriptor descriptor = BitmapDescriptorFactory.fromResource(R.drawable.point_icon);
         Log.e("SUCCESS", "onSuccess:");
         String title;
         Marker marker;
         for (SharePoint sharePoint : sharePoints) {
+            i++;
             if (sharePoint.getInfo() != null) title = sharePoint.getInfo();
             else title = "unknown";
             LatLng sharePointLatLng = new LatLng(sharePoint.getLatitude(), sharePoint.getLongitude());
@@ -300,52 +310,79 @@ public class MapViewFragmentS extends Fragment
                     .icon(descriptor);
             Log.e("S u c c ", "onSuccess:");
             if (sharePoint.getTrashTypes() != null) {
-            for (TrashType trashType : sharePoint.getTrashTypes()) {
-                if (trashType.getName() != null) {
-                    System.out.println("TRASH TYPE: " + trashType.getName());
-                switch (trashType.getName()) {
-                    case "Бумага":
-                        marker = googleMap.addMarker(sharePointMarkerOptions);
-                        marker.setVisible(true);
-                        paperMarkers.add(marker);
-                        break;
-                    case "Металл":
-                        marker = googleMap.addMarker(sharePointMarkerOptions);
-                        marker.setVisible(true);
-                        metalMarkers.add(marker);
-                        break;
-                    case "Стекло":
-                        marker = googleMap.addMarker(sharePointMarkerOptions);
-                        marker.setVisible(true);
-                        glassMarkers.add(marker);
-                        break;
-                    case "Пластик":
-                        marker = googleMap.addMarker(sharePointMarkerOptions);
-                        marker.setVisible(true);
-                        plasticMarkers.add(marker);
-                        break;
-                    default:
-                        Log.e("TimeOption", "onDefault: " );
+                for (TrashType trashType : sharePoint.getTrashTypes()) {
+                    if (trashType.getName() != null) {
+                        System.out.println("TRASH TYPE: " + trashType.getName());
+                        switch (trashType.getName()) {
+                            case "Бумага":
+                                marker = googleMap.addMarker(sharePointMarkerOptions);
+                                marker.setVisible(true);
+                                paperMarkers.add(marker);
+                                break;
+                            case "Металл":
+                                marker = googleMap.addMarker(sharePointMarkerOptions);
+                                marker.setVisible(true);
+                                metalMarkers.add(marker);
+                                break;
+                            case "Стекло":
+                                marker = googleMap.addMarker(sharePointMarkerOptions);
+                                marker.setVisible(true);
+                                glassMarkers.add(marker);
+                                break;
+                            case "Пластик":
+                                marker = googleMap.addMarker(sharePointMarkerOptions);
+                                marker.setVisible(true);
+                                plasticMarkers.add(marker);
+                                break;
+                            default:
+                                Log.e("TimeOption", "onDefault: ");
+                        }
+                    }
                 }
-            }}
-        }}
+            }
+            Log.e("MapView", "index: " + i);
+        }
         Log.e("S u c c e s s", "onSuccess:");
 //        ensurePermissions(requireActivity());
         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(55.798551, 49.106324)).zoom(8).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            googleMap.setMyLocationEnabled(true);
-//                googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-//                locationButton.setVisibility(View.GONE);
-//        } else {
-//            Toast.makeText(requireContext(), "Permission denied to check your location", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.e("MapViewFrag", "onRequestPermissionsResult" );
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//            PreferenceUtils.saveLocationPermitted();
+//            findLocation();
+            Log.e("MapViewFrag", "onRequestPermissionsResult: TRUE" );
+            Toast.makeText(requireContext(), "Разрешение на опредление геопозиции предоставлено", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.e("MapViewFrag", "onRequestPermissionsResult: FALSE" );
+            ActivityCompat.requestPermissions(
+                    requireActivity(), permissions, 0
+            );//            Toast.makeText(requireContext(), "Разрешение на опредление геопозиции не предоставлено", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void findLocation() {
+        dialog.showLoadingIndicator();
+        fusedLocationClient.getLastLocation()
+                .addOnFailureListener(requireActivity(), e -> {
+                    Toast.makeText(requireContext(), "Failed to get location", Toast.LENGTH_SHORT).show();
+                    dialog.hideLoadingIndicator();
+                })
+                .addOnSuccessListener(requireActivity(), location -> {
+                    // Got last known location. In some rare situations this can be null.
+                    dialog.hideLoadingIndicator();
+                    if (location != null) {
+                        MapViewFragmentS.this.location = location;
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(12).build();
+                        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    }
+                });
+    }
 
     @Override
     public void onResume() {
@@ -371,20 +408,18 @@ public class MapViewFragmentS extends Fragment
         mMapView.onLowMemory();
     }
 
-//    public void ensurePermissions(Activity activity) {
-//        if (ContextCompat.checkSelfPermission(
-//                activity, Manifest.permission.ACCESS_COARSE_LOCATION
-//        ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            ActivityCompat.requestPermissions(
-//                    activity, permissions, 0
-//            );
-//        } else {
-//            googleMap.setMyLocationEnabled(true);
-//            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-//            locationButton.setVisibility(View.GONE);
-//        }
-//    }
+    public void ensurePermissions(Activity activity) {
+        if (ContextCompat.checkSelfPermission(
+                activity, Manifest.permission.ACCESS_COARSE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                    activity, permissions, 0
+            );
+        } else {
+//            Toast.makeText(requireContext(), "Разрешение на опредление геопозиции предоставлено", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public void onMarkerClick(Marker marker) {
         Log.e("CLICK MARKER MAP", "onMarkerClick: ");

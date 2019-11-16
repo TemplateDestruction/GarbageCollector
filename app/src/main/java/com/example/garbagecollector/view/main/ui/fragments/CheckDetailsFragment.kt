@@ -35,7 +35,8 @@ class CheckDetailsFragment : Fragment() {
         val barCode = arguments?.getString(SCAN_QR_CONTENT_CODE)
         if (barCode == null) {
             findNavController().navigate(R.id.navigation_map_frag)
-        } else {
+        }
+        else {
             RepositoryProvider
                     .getJsonRepository()
                     .getGoodInfo(barCode, "55.798551", "49.106324")

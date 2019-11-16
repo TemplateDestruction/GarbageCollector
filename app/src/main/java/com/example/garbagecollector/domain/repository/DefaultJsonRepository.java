@@ -1,5 +1,7 @@
 package com.example.garbagecollector.domain.repository;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.garbagecollector.domain.api.StandardApiFactory;
@@ -24,6 +26,13 @@ public class DefaultJsonRepository implements JsonRepository {
         return StandardApiFactory
                 .getJsonService()
                 .getSeparateCollectionPoints()
+                .flatMap(new Function<List<SharePoint>, ObservableSource<List<SharePoint>>>() {
+                    @Override
+                    public ObservableSource<List<SharePoint>> apply(List<SharePoint> sharePoints) throws Exception {
+                        Log.e("JsonRepository:", "getSeparateCollection: " + sharePoints.size());
+                        return Observable.just(sharePoints);
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
