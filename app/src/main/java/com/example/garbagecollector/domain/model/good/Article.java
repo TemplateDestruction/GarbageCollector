@@ -3,7 +3,10 @@ package com.example.garbagecollector.domain.model.good;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Article {
+import java.io.Serializable;
+
+
+public class Article implements Serializable {
 
     @SerializedName("id")
     @Expose

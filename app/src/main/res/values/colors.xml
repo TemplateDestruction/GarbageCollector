@@ -8,4 +8,9 @@
     <color name="light_red">#FF1717</color>
     <color name="dark_green">#2477F2</color>
     <color name="blue">#2477F2</color>
+    <color name="alert_dialog_color">#1E2020</color>
+    <color name="light20">#208f94fb</color>
+
+    <color name="start_color">#FF2477F2</color>
+    <color name="end_color">#FF0BA5E8</color>
 </resources>

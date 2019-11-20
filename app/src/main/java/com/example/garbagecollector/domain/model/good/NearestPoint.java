@@ -1,5 +1,6 @@
 package com.example.garbagecollector.domain.model.good;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.example.garbagecollector.domain.model.City;
@@ -9,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 
-public class NearestPoint {
+public class NearestPoint implements Serializable {
 
 @SerializedName("id")
 @Expose

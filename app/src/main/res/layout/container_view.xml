@@ -28,5 +28,19 @@
         app:borderWidth="0dp"
         app:fabSize="normal"
         app:pressedTranslationZ="12dp" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addContainerBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="170dp"
+        android:src="@drawable/ic_add_black_24dp"
+        android:backgroundTint="@color/white"
+        app:elevation="6dp"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        android:visibility="gone"
+        app:pressedTranslationZ="12dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

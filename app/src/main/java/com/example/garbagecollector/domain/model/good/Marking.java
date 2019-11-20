@@ -3,7 +3,9 @@ package com.example.garbagecollector.domain.model.good;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Marking {
+import java.io.Serializable;
+
+public class Marking implements Serializable {
 
 @SerializedName("id")
 @Expose

@@ -15,9 +15,7 @@ import com.google.gson.annotations.SerializedName;
 import kotlinx.serialization.KSerializer;
 import kotlinx.serialization.Serializable;
 
-
-@Serializable()
-public class GoodInfo {
+public class GoodInfo implements java.io.Serializable {
 
 @SerializedName("id")
 @Expose
@@ -47,31 +45,6 @@ private List<Point> points = null;
 @Expose
 private Article article;
 
-//    protected GoodInfo(Parcel in) {
-//        if (in.readByte() == 0) {
-//            id = null;
-//        } else {
-//            id = in.readInt();
-//        }
-//        name = in.readString();
-//        barCode = in.readString();
-//        image = in.readString();
-//        article = in.reado
-//    }
-
-//
-//
-//    public static final Creator<GoodInfo> CREATOR = new Creator<GoodInfo>() {
-//        @Override
-//        public GoodInfo createFromParcel(Parcel in) {
-//            return new GoodInfo(in);
-//        }
-//
-//        @Override
-//        public GoodInfo[] newArray(int size) {
-//            return new GoodInfo[size];
-//        }
-//    };
 
     public Integer getId() {
 return id;

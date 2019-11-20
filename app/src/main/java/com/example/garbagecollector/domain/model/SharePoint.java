@@ -3,6 +3,7 @@ package com.example.garbagecollector.domain.model;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +12,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SharePoint {
+public class SharePoint implements Serializable {
 
     @SerializedName("id")
     @Expose

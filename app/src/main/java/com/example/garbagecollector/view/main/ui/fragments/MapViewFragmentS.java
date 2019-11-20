@@ -59,6 +59,7 @@ public class MapViewFragmentS extends Fragment {
     List<SharePoint> sharePoints;
     MapView mMapView;
     boolean fromQRCode = false;
+    boolean fromAction = false;
     private GoogleMap googleMap;
     FloatingActionButton myLocationBtn;
     CheckBox glassFilter, paperFilter, plasticFilter, metalFilter;
@@ -75,7 +76,7 @@ public class MapViewFragmentS extends Fragment {
 
     private FusedLocationProviderClient fusedLocationClient;
     private LinearLayout bottomSheet;
-    private TextView pointName, pointStreet, pointTrashTypes,
+    private TextView pointName, pointStreet, pointTrashTypes, viewTrashTypes,
             pointOperationMode, trashPointState, directionToTrashPoint;
     private MarkerOptions QRmarkerOption;
     private TextView routeNavigator;
@@ -115,7 +116,18 @@ public class MapViewFragmentS extends Fragment {
             // Change the visibility of my location button
 //            locationButton.setVisibility(View.GONE);
             googleMap.getUiSettings().setCompassEnabled(false);
-            if (!fromQRCode) {
+            try {
+                if (getArguments().getString("marker") != null) {
+                    getTrashPoint(getArguments().getString("id"));
+                    fromQRCode = true;
+                } else if (getArguments().getString("action") != null) {
+                    drawShop();
+                    fromAction = true;
+                }
+            } catch (Exception e) {
+
+            }
+            if (!fromQRCode && !fromAction) {
                 getTrashCollectionPoints();
             }
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -135,14 +147,17 @@ public class MapViewFragmentS extends Fragment {
         myLocationBtn = view.findViewById(R.id.myLocationButton);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         myLocationBtn.setOnClickListener(view1 -> findLocation());
-        try {
-            if (getArguments().getString("marker") != null) {
-                getTrashPoint(getArguments().getString("id"));
-                fromQRCode = true;
-            }
-        } catch (Exception e) {
-
-        }
+//        try {
+//            if (getArguments().getString("marker") != null) {
+//                getTrashPoint(getArguments().getString("id"));
+//                fromQRCode = true;
+//            } else if (getArguments().getString("action") != null) {
+//                drawShop();
+//                fromAction = true;
+//            }
+//        } catch (Exception e) {
+//
+//        }
         super.onViewCreated(view, savedInstanceState);
         bottomSheet = view.findViewById(R.id.bottom_sheet_reference);
         mainLay = view.findViewById(R.id.main_lay_reference);
@@ -155,6 +170,7 @@ public class MapViewFragmentS extends Fragment {
         metalFilter = mainLay.findViewById(R.id.metal_filter_btn);
         metalTrashBtn = mainLay.findViewById(R.id.metal_trash_btn);
 
+        viewTrashTypes = bottomSheet.findViewById(R.id.suitTrashTypes_bottom_sheet);
         pointName = bottomSheet.findViewById(R.id.pointName_bottom_sheet);
         pointStreet = bottomSheet.findViewById(R.id.pointStreet_bottom_sheet);
         pointTrashTypes = bottomSheet.findViewById(R.id.pointTrashTypes_bottom_sheet);
@@ -223,6 +239,32 @@ public class MapViewFragmentS extends Fragment {
         ensurePermissions(requireActivity());
     }
 
+    private void drawShop() {
+        BitmapDescriptor descriptor = BitmapDescriptorFactory.fromResource(R.drawable.point_icon);
+        QRmarkerOption = new MarkerOptions()
+                .position(new LatLng(55.7305897, 37.6238789))
+                .title("Кофейня Даблби")
+                .icon(descriptor);
+        pointName.setText("Кофейня Даблби");
+        pointStreet.setText("ул. Пятницкая, 73, Москва");
+        trashPointState.setVisibility(View.GONE);
+        pointTrashTypes.setVisibility(View.GONE);
+        viewTrashTypes.setVisibility(View.GONE);
+        StringBuilder stringBuilder = new StringBuilder();
+        googleMap.addMarker(QRmarkerOption);
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(55.714616, 37.4980165)).zoom(8).build();
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        directionToTrashPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + 55.7306253 + "," + 37.6259839);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
+    }
+
     private void getTrashPoint(String id) {
         RepositoryProvider
                 .getJsonRepository()
@@ -249,32 +291,15 @@ public class MapViewFragmentS extends Fragment {
             trashPointState.setBackgroundColor(requireContext().getColor(R.color.dark_green));
         }
         googleMap.addMarker(QRmarkerOption);
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(55.798551, 49.106324)).zoom(8).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(55.714616, 37.4980165)).zoom(8).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         directionToTrashPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Создаем интент для построения маршрута
-                Intent intent = new Intent("ru.yandex.yandexnavi.action.BUILD_ROUTE_ON_MAP");
-                intent.setPackage("ru.yandex.yandexnavi");
-
-                PackageManager pm = requireActivity().getPackageManager();
-                List<ResolveInfo> infos = pm.queryIntentActivities(intent, 0);
-
-                // Проверяем, установлен ли Яндекс.Навигатор
-                if (infos == null || infos.size() == 0) {
-                    // Если нет - будем открывать страничку Навигатора в Google Play
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse("market://details?id=ru.yandex.yandexnavi"));
-                } else {
-                    intent.putExtra("lat_from", 55.798551);
-                    intent.putExtra("lon_from", 49.106324);
-                    intent.putExtra("lat_to", sharePoint.getLatitude());
-                    intent.putExtra("lon_to", sharePoint.getLongitude());
-                }
-
-                // Запускаем нужную Activity
-                startActivity(intent);
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + sharePoint.getLongitude() + "," + sharePoint.getLatitude());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
             }
         });
     }
@@ -344,7 +369,7 @@ public class MapViewFragmentS extends Fragment {
         }
         Log.e("S u c c e s s", "onSuccess:");
 //        ensurePermissions(requireActivity());
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(55.798551, 49.106324)).zoom(8).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(55.714616, 37.4980165)).zoom(8).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
@@ -370,18 +395,23 @@ public class MapViewFragmentS extends Fragment {
         dialog.showLoadingIndicator();
         fusedLocationClient.getLastLocation()
                 .addOnFailureListener(requireActivity(), e -> {
+                    Log.e("Failed to get location: " , e.getMessage());
                     Toast.makeText(requireContext(), "Failed to get location", Toast.LENGTH_SHORT).show();
                     dialog.hideLoadingIndicator();
                 })
                 .addOnSuccessListener(requireActivity(), location -> {
+                    Log.e("Success to get location: ", "success");
                     // Got last known location. In some rare situations this can be null.
                     dialog.hideLoadingIndicator();
                     if (location != null) {
                         MapViewFragmentS.this.location = location;
                         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(12).build();
                         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    } else {
+                        Log.e("Success to get location: ", "location is null");
                     }
                 });
+
     }
 
     @Override
@@ -423,7 +453,7 @@ public class MapViewFragmentS extends Fragment {
 
     public void onMarkerClick(Marker marker) {
         Log.e("CLICK MARKER MAP", "onMarkerClick: ");
-        if (!fromQRCode) {
+        if (!fromQRCode && !fromAction) {
             for (SharePoint sharePoint : sharePoints) {
                 if (sharePoint.getInfo().equals(marker.getTitle())) {
                     pointName.setText(sharePoint.getInfo());
@@ -437,7 +467,15 @@ public class MapViewFragmentS extends Fragment {
                     }
                     // TODO: 9/29/2019 маршрут
 //                directionToTrashPoint
-
+                    directionToTrashPoint.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + sharePoint.getLongitude() + "," + sharePoint.getLatitude());
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            mapIntent.setPackage("com.google.android.apps.maps");
+                            startActivity(mapIntent);
+                        }
+                    });
                 }
             }
         }

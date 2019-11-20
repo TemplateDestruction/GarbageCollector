@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -17,7 +18,7 @@
                 android:id="@+id/good_img_fragment_details"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:layout_marginTop="68dp"
+                android:layout_marginTop="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.885"
                 app:layout_constraintStart_toStartOf="parent"
@@ -49,27 +50,13 @@
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/randomArticleBtn" />
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Результат сканирования"
-                android:textColor="#2477F2"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-                app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/banner_checkDetailsFrag" />
 
             <TextView
                 android:id="@+id/materialType_fragment_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
                 android:alpha="0.87"
                 android:fontFamily="@font/roboto_regular"
                 android:text="Пластик"
@@ -77,7 +64,7 @@
                 android:textColor="@color/black"
                 android:textSize="34sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+                app:layout_constraintTop_toTopOf="@+id/good_img_fragment_details" />
 
             <TextView
                 android:id="@+id/goodName_fragment_details"
@@ -127,7 +114,7 @@
                 android:layout_marginEnd="16dp"
                 android:alpha="0.87"
                 android:fontFamily="@font/roboto_regular"
-                android:text="Также пластик принимают еще в 29 пунтках г. Казань"
+                android:text="Также пластик принимают еще в 4 пунтках г. Москва"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -135,22 +122,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/ic_arrow_blue"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/randomArticleBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginEnd="32dp"
                 android:background="@drawable/hard_rounded_corners"
                 android:outlineAmbientShadowColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -212,10 +189,11 @@
                     android:id="@+id/imageView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/containterName_fragment_details"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/trashTypes_fragment_details"
+                    app:layout_constraintTop_toBottomOf="@+id/trashTypes_fragment_details"
                     app:srcCompat="@drawable/ic_rate" />
 
                 <TextView
@@ -224,14 +202,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:alpha="0.87"
                     android:fontFamily="@font/roboto_regular"
                     android:text="Бумага, металл, пластик, стекло"
                     android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/toPoint"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/containerStreet_fragment_details" />
+                    app:layout_constraintTop_toTopOf="@+id/toPoint" />
 
                 <TextView
                     android:id="@+id/containterName_fragment_details"
@@ -249,19 +226,19 @@
 
                 <TextView
                     android:id="@+id/toPoint"
-                    android:layout_width="72dp"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/blue_frame"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="clip_vertical"
+                    android:padding="8dp"
                     android:text="ПЕРЕЙТИ"
                     android:textColor="@color/blue"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/trashTypes_fragment_details"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+                    app:layout_constraintTop_toBottomOf="@+id/containerStreet_fragment_details" />
 
                 <TextView
                     android:id="@+id/containerStreet_fragment_details"
@@ -277,6 +254,31 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/containterName_fragment_details" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/marketAction_checkDetailsFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/red_frame"
+                android:fontFamily="@font/roboto_medium"
+                android:padding="4dp"
+                android:text="АКЦИЯ"
+                android:textColor="@color/light_red"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description_fragment_details" />
+
+            <ImageView
+                android:id="@+id/banner_checkDetailsFrag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/randomArticleBtn"
+                app:srcCompat="@mipmap/banner_test" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

@@ -1,12 +1,10 @@
 package com.example.garbagecollector.view.main
 
 import android.Manifest
-import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -32,7 +30,7 @@ class BottomNavAct : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.prepareToScanFragment, R.id.navigation_map_frag, R.id.navigation_profile))
+                R.id.navigation_barcode, R.id.navigation_map_frag, R.id.navigation_news))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 //        ensurePermissions()

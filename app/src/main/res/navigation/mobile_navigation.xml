@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_map_frag">
+    app:startDestination="@id/navigation_news">
 
     <fragment
         android:id="@+id/navigation_barcode"
@@ -22,14 +22,14 @@
         tools:layout="@layout/fragment_map" />
 
     <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.example.garbagecollector.view.main.ui.fragments.ProfileFragment"
+        android:id="@+id/navigation_news"
+        android:name="com.example.garbagecollector.view.main.ui.fragments.NewsFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_news" />
     <fragment
         android:id="@+id/checkDetailsFragment"
         android:name="com.example.garbagecollector.view.main.ui.fragments.CheckDetailsFragment"
-        android:label="CheckDetailsFragment" />
+        android:label="Информация о товаре" />
     <fragment
         android:id="@+id/prepareToScanFragment"
         android:name="com.example.garbagecollector.view.main.ui.fragments.PrepareToScanFragment"
@@ -38,4 +38,8 @@
             android:id="@+id/action_prepareToScanFragment_to_navigation_barcode"
             app:destination="@id/navigation_barcode" />
     </fragment>
+    <fragment
+        android:id="@+id/actionMarketFragment"
+        android:name="com.example.garbagecollector.view.main.ui.fragments.ActionMarketFragment"
+        android:label="Акция" />
 </navigation>

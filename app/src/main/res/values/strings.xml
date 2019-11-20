@@ -2,8 +2,34 @@
     <string name="app_name">GarbageCollector</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_bottom_nav">BottomNavAct</string>
-    <string name="title_barcode">Barcode</string>
-    <string name="title_map">Map</string>
-    <string name="title_profile">Profile</string>
+    <string name="title_barcode">Сканер</string>
+    <string name="title_map">Карта</string>
+    <string name="title_profile">Лента</string>
     <string name="barcode_title"> </string>
+    <string name="ok">OK</string>
+
+    <string-array name="info">
+        <item>В Сеуле солнечные батареи установят на все общественные здания</item>
+        <item>Снуп Дог снялся в рекламе веганского сэндвича</item>
+        <item>На дискуссии обсудят, права ли Грета Тунберг</item>
+        <item>Более 22 тысяч контейнерных площадок в Москве готовы к раздельному сбору мусора</item>
+        <item>ВШЭ оптимизирует систему раздельного сбора мусора</item>
+        <item>Перерабатывающие предприятия нанесли на карту</item>
+        <item>В «Пятёрочке» начали продавать многоразовые мешки для фруктов и овощей</item>
+        <item>Более миллиона деревьев высадили в Оренбургской области этой осенью</item>
+        <item>В Таиланде запретят одноразовый пластик</item>
+        <item>На лекции расскажут о глобальном потеплении и ледниковых периодах</item>
+    </string-array>
+    <string-array name="dates">
+        <item>18 ноября</item>
+        <item>18 ноября</item>
+        <item>18 ноября</item>
+        <item>18 ноября</item>
+        <item>18 ноября</item>
+        <item>15 ноября</item>
+        <item>15 ноября</item>
+        <item>15 ноября</item>
+        <item>15 ноября</item>
+        <item>15 ноября</item>
+    </string-array>
 </resources>
