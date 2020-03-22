@@ -1,0 +1,11 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="@color/start_color"
+        android:endColor="@color/end_color"/>
+    <corners
+        android:radius="4dp"/>
+
+
+<!--    <stroke-->
+<!--        android:color="@color/zxing_transparent"/>-->
+</shape>

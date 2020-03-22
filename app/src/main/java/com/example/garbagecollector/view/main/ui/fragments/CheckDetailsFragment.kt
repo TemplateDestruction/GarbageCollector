@@ -86,8 +86,8 @@ class CheckDetailsFragment : Fragment() {
         materialType_fragment_details.text = goodInfo.trashType.name
         goodName_fragment_details.text = goodInfo.name
         description_fragment_details.text = goodInfo.trashType.preparation
-        articleTitle_fragment_details.text = goodInfo.article.title
-        article_fragment_details.text = goodInfo.article.text.substring(0, 10) + "..."
+//        articleTitle_fragment_details.text = goodInfo.article.title
+//        article_fragment_details.text = goodInfo.article.text.substring(0, 10) + "..."
 //        containterName_fragment_details.text = goodInfo.nearestPoint.info
 //        containerStreet_fragment_details.text = goodInfo.nearestPoint.address
         containterName_fragment_details.text = "КОНТЕЙНЕР \"ДОБРОВОРОТ\" "
