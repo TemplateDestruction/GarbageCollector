@@ -1,6 +1,6 @@
 # GarbageCollector
 Цифровой прорыв, трек 18, 2019г. Стол 11
 
-Презентация - 
+Презентация - https://clck.ru/McEW6
 
-Приложение - 
+Приложение - https://clck.ru/McEUt
